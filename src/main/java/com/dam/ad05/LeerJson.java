@@ -15,6 +15,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,12 +26,15 @@ import java.util.logging.Logger;
  */
 public class LeerJson {
 
-  public static Datos jsonToObj() {
+  public Datos jsonToObj() {
 
     try {
       //para que lo lea el .jar
-//      InputStream input = getClass().getResourceAsStream("/classpath/to/my/file");
-      File file = new File("src/main/resources/data.json");
+//      InputStream input = getClass().getResourceAsStream("data.json");
+      File file = getFileFromResources("/data.json");
+//      File file = new File(getClass().getClassLoader().getResource("data.json").getFile());// buscando en carpeta resources, tampoco funciona el jar
+//      File file = new File("src/main/resources/data.json");//pasando la ruta como string, mi primera opción
+
       FileReader fr = new FileReader(file, StandardCharsets.UTF_8);//utf8 para no tener problemas con ñ o tildes
       BufferedReader br = new BufferedReader(fr);
 
@@ -58,6 +62,28 @@ public class LeerJson {
       System.err.println("Error IOException");
     }
     return null;
+  }
+
+  private File getFileFromResources(String fileName) {
+
+    File jsonFile = null;
+
+    try {
+      InputStream input = getClass().getResourceAsStream(fileName);
+      System.out.println("input: " + input);
+      
+      byte[] buffer = new byte[input.available()];
+      input.read(buffer);
+
+      jsonFile = new File("newData.json");
+      OutputStream outStream = new FileOutputStream(jsonFile);
+      outStream.write(buffer);
+    } catch (IOException ex) {
+      Logger.getLogger(LeerJson.class.getName()).log(Level.SEVERE, null, ex);
+    } finally {
+      System.out.println("file: " + jsonFile);
+      return jsonFile;
+    }
   }
 
 }

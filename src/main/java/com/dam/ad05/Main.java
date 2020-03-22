@@ -56,7 +56,9 @@ public class Main {
   }
 
   private static void cargarDatos() {
-    Datos d = LeerJson.jsonToObj();
+    LeerJson data = new LeerJson();
+    Datos d = data.jsonToObj();
+//    Datos d = LeerJson.jsonToObj();//Así lo tenía antes, con 
 
     url = d.getDbConnection().getAddress();
     db = d.getDbConnection().getName();
@@ -93,6 +95,11 @@ public class Main {
   public static String getPath() {
     return path;
   }
+
+  public static void setPath(String path) {
+    Main.path = path;
+  }
+  
   
   
 }

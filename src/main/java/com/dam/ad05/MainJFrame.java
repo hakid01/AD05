@@ -6,6 +6,7 @@
 package com.dam.ad05;
 
 import java.awt.Color;
+import java.awt.Component;
 
 /**
  *

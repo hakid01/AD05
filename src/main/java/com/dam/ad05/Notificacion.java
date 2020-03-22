@@ -5,6 +5,8 @@
  */
 package com.dam.ad05;
 
+import java.awt.Component;
+import java.io.File;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -106,8 +108,8 @@ public class Notificacion extends Thread {
             sqlMensaxe.setInt(1, id);
             try (ResultSet rs = sqlMensaxe.executeQuery()) {
               rs.next();
-              JOptionPane.showMessageDialog(null, "Se ha añadido el archivo "
-                  + rs.getString(2) + " en " + rs.getString(1), Main.getPath(),
+              JOptionPane.showMessageDialog(null, "Se ha añadido "
+                  + rs.getString(1) + File.separator + rs.getString(2), Main.getPath(),
                   JOptionPane.INFORMATION_MESSAGE);
 //              System.out.println(rs.getString(1) + ":" + rs.getString(2));
               DownloadData.start(conn, Main.getPath());
