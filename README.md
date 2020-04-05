@@ -7,7 +7,7 @@ Para el funcionanmiento de la app se han utilizado las dos tablas que se crean c
 ```sql
 create table directorios 
 (id serial primary key, 
-nome text not null unique);
+nome text[] not null unique);
 
 create table arquivos 
 (id serial, nome text not null, 
