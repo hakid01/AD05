@@ -58,7 +58,6 @@ public class Main {
   private static void cargarDatos() {
     LeerJson data = new LeerJson();
     Datos d = data.jsonToObj();
-//    Datos d = LeerJson.jsonToObj();//Así lo tenía antes, con 
 
     url = d.getDbConnection().getAddress();
     db = d.getDbConnection().getName();
@@ -67,7 +66,7 @@ public class Main {
 
     path = d.getApp().getDirectory();
     //DEbug
-//        System.out.println("pass db: " + d.getDbConnection().getPassword());
+        System.out.println("pass db: " + d.getDbConnection().getPassword());
   }
 
   private static Connection crearConexion() {
@@ -83,7 +82,7 @@ public class Main {
 
     try {
       conn = DriverManager.getConnection(postgres, props);
-
+        System.out.println("Hay conexión");
       return conn;
     } catch (SQLException ex) {
       Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
