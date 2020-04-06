@@ -18,87 +18,98 @@ import java.util.logging.Logger;
  */
 public class Main {
 
-  static String url;
-  static String db;
-  static String user;
-  static String pass;
-  static String path;
+    static String url;
+    static String db;
+    static String user;
+    static String pass;
+    static String path;
 
 //  public static void main(String[] args) {
-  public static void start() {
+    public static void start() {
 
-    Notificacion.activarHilo();
-    CheckFiles.activarHilo();
-    cargarDatos();
+        Notificacion.activarHilo();
+        CheckFiles.activarHilo();
+        cargarDatos();
 
-    Connection conn = crearConexion();
-    DownloadData.start(conn, path);
+        Connection conn = crearConexion();
+        DownloadData.start(conn, path);
 
-    SaveData saving = new SaveData();
-    saving.insertData(conn, path);
+        SaveData saving = new SaveData();
+        saving.insertData(conn, path);
 
-    //Cerramos la conexión con la db
-    if (conn != null) {
-      try {
-        conn.close();
-        System.out.println("cerramos conexión");
-      } catch (SQLException ex) {
-        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-      }
+        //Cerramos la conexión con la db
+        if (conn != null) {
+            try {
+                conn.close();
+                System.out.println("cerramos conexión");
+            } catch (SQLException ex) {
+                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        Notificacion not = new Notificacion(crearConexion());
+        not.notCon();
+        not.start();
+
+        CheckFiles checking = new CheckFiles(crearConexion(), path);
+        checking.start();
     }
-    
-    Notificacion not = new Notificacion(crearConexion());
-    not.notCon();
-    not.start();
 
-    CheckFiles checking = new CheckFiles(crearConexion(),path);
-    checking.start();
-  }
+    private static void cargarDatos() {
+        LeerJson data = new LeerJson();
+        Datos d = data.jsonToObj();
 
-  private static void cargarDatos() {
-    LeerJson data = new LeerJson();
-    Datos d = data.jsonToObj();
+        url = d.getDbConnection().getAddress();
+        db = d.getDbConnection().getName();
+        user = d.getDbConnection().getUser();
+        pass = d.getDbConnection().getPassword();
 
-    url = d.getDbConnection().getAddress();
-    db = d.getDbConnection().getName();
-    user = d.getDbConnection().getUser();
-    pass = d.getDbConnection().getPassword();
-
-    path = d.getApp().getDirectory();
-    //DEbug
+        path = d.getApp().getDirectory();
+        //DEbug
         System.out.println("pass db: " + d.getDbConnection().getPassword());
-  }
-
-  private static Connection crearConexion() {
-    Connection conn = null;
-
-    //Propiedades de la conexión con la db
-    Properties props = new Properties();
-    props.setProperty("user", user);
-    props.setProperty("password", pass);
-
-    //Dirección de conexión con db
-    String postgres = "jdbc:postgresql://" + url + "/" + db;
-
-    try {
-      conn = DriverManager.getConnection(postgres, props);
-        System.out.println("Hay conexión");
-      return conn;
-    } catch (SQLException ex) {
-      Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
     }
 
-    return conn;
-  }
+    private static Connection crearConexion() {
+        Connection conn = null;
 
-  public static String getPath() {
-    return path;
-  }
+        //Propiedades de la conexión con la db
+        Properties props = new Properties();
+        props.setProperty("user", user);
+        props.setProperty("password", pass);
 
-  public static void setPath(String path) {
-    Main.path = path;
-  }
-  
-  
-  
+        //Dirección de conexión con db
+        String postgres = "jdbc:postgresql://" + url + "/" + db;
+
+        try {
+            conn = DriverManager.getConnection(postgres, props);
+            System.out.println("Hay conexión");
+            return conn;
+        } catch (SQLException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return conn;
+    }
+
+    public static String[] pathToArray(String path) {
+        String[] arrayPath = {path};
+
+        //si estamos sobre windows
+        if (path.contains("\\")) {
+            arrayPath = path.split("\\\\");
+        } //si estamos sobre linux
+        else if (path.contains("/")) {
+            arrayPath = path.split("/");
+        }
+        return arrayPath;
+    }
+
+    public static String getPath() {
+        return path;
+    }
+
+    public static void setPath(String path) {
+        Main.path = path;
+    }
+
 }
