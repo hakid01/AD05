@@ -49,7 +49,7 @@ public class ScanFiles {
             String iPath = path + File.separator + tempFiles[i];
             File iFile = new File(iPath);
 
-            String relativePath = "./" + iFile.getAbsolutePath().substring(rootPathLength + 1);
+            String relativePath = "." + File.separator + iFile.getAbsolutePath().substring(rootPathLength + 1);
 
             if (iFile.isDirectory()) {
                 dirs.add(relativePath);

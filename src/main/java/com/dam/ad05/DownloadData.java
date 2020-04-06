@@ -43,6 +43,10 @@ public class DownloadData {
                 }
                 dirList.add(strPath);
             }
+            
+            for(String s : dirList){
+              System.out.println(s);
+            }
 
             rs = st.executeQuery("SELECT d.nome, a.nome "
                     + "FROM directorios d, arquivos a WHERE d.id = a.id_directorio");
@@ -57,6 +61,10 @@ public class DownloadData {
                 }
                 String archString = rs.getString(2);
                 archList.add(dirString + archString);
+            }
+            
+            for (String s : archList){
+              System.out.println(s);
             }
 
             rs.close();
@@ -75,7 +83,7 @@ public class DownloadData {
     private static void crearDirectorios(String path) {
         dirList.forEach((String dir) -> {
             File directorio = new File(path + dir.substring(1));
-
+          System.out.println("llegamos a crear directorios");
             if (!directorio.exists()) {
                 directorio.mkdirs();
             }

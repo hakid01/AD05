@@ -67,6 +67,7 @@ public class Main {
         path = d.getApp().getDirectory();
         //DEbug
         System.out.println("pass db: " + d.getDbConnection().getPassword());
+        System.out.println("rootpath: " + path);
     }
 
     private static Connection crearConexion() {
