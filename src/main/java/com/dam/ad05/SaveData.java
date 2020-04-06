@@ -48,10 +48,10 @@ public class SaveData {
             PreparedStatement ps = conn.prepareStatement(sqlInsertDir);
             tempDir = sf.getDirs();//ArrayList de directorios
 
-            System.out.println("tempDir: " + tempDir);
+//            System.out.println("tempDir: " + tempDir);
 
             for (String dir : tempDir) {
-                System.out.println("dir string:" + dir);
+//                System.out.println("dir string:" + dir);
                 ps.setArray(1, conn.createArrayOf("TEXT", Main.pathToArray(dir)));
                 ps.executeUpdate();
             }
@@ -68,12 +68,12 @@ public class SaveData {
                 File f = new File(path + file.substring(1));
                 try (FileInputStream fis = new FileInputStream(f)) {
                     String tempPath = file.substring(0, file.length() - (f.getName().length() + 1));
-          System.out.println("tempPath: " + tempPath);
+//          System.out.println("tempPath: " + tempPath);
                     try (ResultSet rs = st.executeQuery(sqlSelectID + Arrays.toString(Main.pathToArray(tempPath)).replace("[", "{").replace("]", "}") + "';")) {
                         int tempId = 0;
                         while (rs.next()) {
                             tempId = rs.getInt(1);
-              System.out.println("tempId: " + tempId);
+//              System.out.println("tempId: " + tempId);
                         }
                         ps.setString(1, f.getName());
                         ps.setInt(2, tempId);

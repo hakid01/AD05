@@ -83,7 +83,7 @@ public class DownloadData {
     private static void crearDirectorios(String path) {
         dirList.forEach((String dir) -> {
             File directorio = new File(path + dir.substring(1));
-          System.out.println("llegamos a crear directorios");
+//          System.out.println("llegamos a crear directorios");
             if (!directorio.exists()) {
                 directorio.mkdirs();
             }
@@ -103,11 +103,11 @@ public class DownloadData {
 
                     //convertimos el path del archivo arch en array para poder pasarlo a la base de datos
                     String pathDir = arch.substring(0, arch.length() - (archivo.getName().length() + 1));
-                    System.out.println("pathDir: " + pathDir);
+//                    System.out.println("pathDir: " + pathDir);
                     
                     String[] pathDirarr = Main.pathToArray(pathDir);
-                    System.out.println("hola");
-                    System.out.println("pathDir array : " + Arrays.toString(pathDirarr));
+//                    System.out.println("hola");
+//                    System.out.println("pathDir array : " + Arrays.toString(pathDirarr));
                     
                     ResultSet rs2 = st.executeQuery("SELECT id FROM directorios "
                             + "WHERE nome = '" + Arrays.toString(pathDirarr).replace("[", "{").replace("]", "}") + "';");
